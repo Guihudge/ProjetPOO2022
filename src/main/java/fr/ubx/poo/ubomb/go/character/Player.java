@@ -23,6 +23,8 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     private int bombCapacity;
     private int bombRange;
 
+    private int availableBomb;
+
     private boolean hadPrincess;
 
     public int getKeys() {
@@ -34,6 +36,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         this.direction = Direction.DOWN;
         this.lives = game.configuration().playerLives();
         this.bombCapacity = game.configuration().bombBagCapacity();
+        this.availableBomb = this.bombCapacity;
         this.bombRange = 1;
         this.keys = 0;
         this.hadPrincess = false;
@@ -105,6 +108,14 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     public boolean isHadPrincess() {
         return hadPrincess;
+    }
+
+    public int getAvailableBomb() {
+        return availableBomb;
+    }
+
+    public void setAvailableBomb(int availableBomb) {
+        this.availableBomb = availableBomb;
     }
 
     public Direction getDirection() {
