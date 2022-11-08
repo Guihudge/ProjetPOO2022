@@ -21,17 +21,25 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     private Direction direction;
     private boolean moveRequested = false;
     private final int lives;
+    private int keys;
+
+    public int getKeys() {
+        return keys;
+    }
 
     public Player(Game game, Position position) {
         super(game, position);
         this.direction = Direction.DOWN;
         this.lives = game.configuration().playerLives();
+        this.keys = 0;
     }
 
 
     @Override
     public void take(Key key) {
         System.out.println("Take the key ...");
+        keys++;
+        key.remove();
     }
 
     public void doMove(Direction direction) {
