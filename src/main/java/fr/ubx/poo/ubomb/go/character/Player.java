@@ -12,6 +12,7 @@ import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.TakeVisitor;
 import fr.ubx.poo.ubomb.go.decor.Decor;
+import fr.ubx.poo.ubomb.go.decor.Monster;
 import fr.ubx.poo.ubomb.go.decor.Stone;
 import fr.ubx.poo.ubomb.go.decor.Tree;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
@@ -20,7 +21,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     private Direction direction;
     private boolean moveRequested = false;
-    private final int lives;
+    private int lives;
     private int keys;
 
     public int getKeys() {
@@ -48,6 +49,9 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         GameObject next = game.grid().get(nextPos);
         if (next instanceof Bonus bonus) {
                 bonus.takenBy(this);
+        }
+        if (next instanceof Monster){
+            lives -= 1;
         }
         setPosition(nextPos);
     }

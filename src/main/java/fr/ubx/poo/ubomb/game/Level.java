@@ -1,5 +1,6 @@
 package fr.ubx.poo.ubomb.game;
 
+import fr.ubx.poo.ubomb.go.decor.Monster;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.launcher.Entity;
@@ -37,6 +38,8 @@ public class Level implements Grid {
                     case Key:
                         elements.put(position, new Key(position));
                         break;
+                    case Monster:
+                        elements.put(position, new Monster(position));
                     case Empty: break;
                     default:
                         throw new RuntimeException("EntityCode " + entity.name() + " not processed");
