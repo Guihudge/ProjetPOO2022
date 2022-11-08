@@ -11,6 +11,9 @@ import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.TakeVisitor;
+import fr.ubx.poo.ubomb.go.decor.Decor;
+import fr.ubx.poo.ubomb.go.decor.Stone;
+import fr.ubx.poo.ubomb.go.decor.Tree;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 
 public class Player extends GameObject implements Movable, TakeVisitor {
@@ -59,8 +62,9 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     }
 
     public final boolean canMove(Direction direction) {
-
-        return true;
+        if(game.grid().inside(direction.nextPosition(getPosition())))
+            return !(game.grid().get(direction.nextPosition(getPosition())) instanceof Stone) && !(game.grid().get(direction.nextPosition(getPosition())) instanceof Tree);
+        return false;
     }
 
     public void update(long now) {
