@@ -40,6 +40,15 @@ public class Level implements Grid {
                         break;
                     case Monster:
                         elements.put(position, new Monster(position));
+                        break;
+                    case DoorPrevOpened:
+                        elements.put(position, new Door(position, true));
+                        break;
+                    case DoorNextClosed:
+                        elements.put(position, new Door(position));
+                        break;
+                    case DoorNextOpened:
+                        elements.put(position, new Door(position, true));
                     case Empty: break;
                     default:
                         throw new RuntimeException("EntityCode " + entity.name() + " not processed");

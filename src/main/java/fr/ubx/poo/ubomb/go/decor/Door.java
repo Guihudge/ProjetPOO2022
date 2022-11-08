@@ -7,9 +7,14 @@ public class Door extends Decor{
 
     private boolean isOpen;
 
-    public Door(Game game, Position position) {
-        super(game, position);
+    public Door(Position position) {
+        super(position);
         isOpen = false;
+    }
+
+    public Door(Position position, boolean value){
+        super(position);
+        isOpen = value;
     }
 
     @Override
