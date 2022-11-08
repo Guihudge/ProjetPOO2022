@@ -126,6 +126,12 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         return false;
     }
 
+    public void openDoor(){
+        if(game.grid().get(getPosition()) instanceof Door)
+            if(((Door) game.grid().get(getPosition())).canOpen(game))
+                ((Door) game.grid().get(getPosition())).open();
+    }
+
     public void update(long now) {
         if (moveRequested) {
             if (canMove(direction)) {
