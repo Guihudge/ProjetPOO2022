@@ -40,11 +40,10 @@ public class Door extends Decor{
     }
 
     public void open() {
-        if(canOpen())
-            isOpen = true;
+        isOpen = true;
     }
 
-    public boolean canOpen(){
+    public boolean canOpen(Game game){
         return game.player().getKeys() > 0;
     }
 }
