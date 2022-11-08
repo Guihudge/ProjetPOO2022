@@ -171,6 +171,11 @@ public final class GameEngine {
             gameLoop.stop();
             showMessage("Perdu!", Color.RED);
         }
+
+        if (player.isHadPrincess()){
+            gameLoop.stop();
+            showMessage("You Win", Color.GREEN);
+        }
     }
 
     public void cleanupSprites() {

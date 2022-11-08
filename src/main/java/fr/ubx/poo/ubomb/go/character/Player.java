@@ -4,17 +4,13 @@
 
 package fr.ubx.poo.ubomb.go.character;
 
-import fr.ubx.poo.ubomb.engine.Timer;
 import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.TakeVisitor;
-import fr.ubx.poo.ubomb.go.decor.Decor;
-import fr.ubx.poo.ubomb.go.decor.Monster;
-import fr.ubx.poo.ubomb.go.decor.Stone;
-import fr.ubx.poo.ubomb.go.decor.Tree;
+import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 
 public class Player extends GameObject implements Movable, TakeVisitor {
@@ -23,6 +19,8 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     private boolean moveRequested = false;
     private int lives;
     private int keys;
+
+    private boolean hadPrincess;
 
     public int getKeys() {
         return keys;
@@ -33,6 +31,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         this.direction = Direction.DOWN;
         this.lives = game.configuration().playerLives();
         this.keys = 0;
+        this.hadPrincess = false;
     }
 
 
@@ -41,6 +40,12 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         System.out.println("Take the key ...");
         keys++;
         key.remove();
+    }
+
+    public void take(Princess princess) {
+        System.out.println("Get a Princess!");
+        hadPrincess = true;
+        princess.remove();
     }
 
     public void doMove(Direction direction) {
@@ -59,6 +64,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     public int getLives() {
         return lives;
+    }
+
+    public boolean isHadPrincess() {
+        return hadPrincess;
     }
 
     public Direction getDirection() {
