@@ -52,6 +52,19 @@ public class Level implements Grid {
                         break;
                     case Princess:
                         elements.put(position, new Princess(position));
+                        break;
+                    case BombRangeDec:
+                        elements.put(position, new BombRangeDec(position));
+                        break;
+                    case BombRangeInc:
+                        elements.put(position, new BombRangeInc(position));
+                        break;
+                    case BombNumberInc:
+                        elements.put(position, new BombNbInc(position));
+                        break;
+                    case BombNumberDec:
+                        elements.put(position, new BombNbDec(position));
+                        break;
                     case Empty: break;
                     default:
                         throw new RuntimeException("EntityCode " + entity.name() + " not processed");
