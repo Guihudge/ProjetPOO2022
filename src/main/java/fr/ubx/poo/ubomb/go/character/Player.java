@@ -20,6 +20,9 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     private int lives;
     private int keys;
 
+    private int bombCapacity;
+    private int bombRange;
+
     private boolean hadPrincess;
 
     public int getKeys() {
@@ -30,6 +33,8 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         super(game, position);
         this.direction = Direction.DOWN;
         this.lives = game.configuration().playerLives();
+        this.bombCapacity = game.configuration().bombBagCapacity();
+        this.bombRange = 1;
         this.keys = 0;
         this.hadPrincess = false;
     }
@@ -48,6 +53,30 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         princess.remove();
     }
 
+    public void take(BombRangeDec rangeDec) {
+        System.out.println("Decrement bomb range");
+        bombRange --;
+        rangeDec.remove();
+    }
+
+    public void take(BombRangeInc rangeInc){
+        System.out.println("Increment bomb range");
+        bombRange ++;
+        rangeInc.remove();
+    }
+
+    public void take(BombNbInc numberInc){
+        System.out.println("Bomb bag capacity +1");
+        bombCapacity ++;
+        numberInc.remove();
+    }
+
+    public void take(BombNbDec numberDec){
+        System.out.println("Bomb bag capacity -1");
+        bombCapacity --;
+        numberDec.remove();
+    }
+
     public void doMove(Direction direction) {
         // This method is called only if the move is possible, do not check again
         Position nextPos = direction.nextPosition(getPosition());
@@ -64,6 +93,14 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     public int getLives() {
         return lives;
+    }
+
+    public int getBombCapacity() {
+        return bombCapacity;
+    }
+
+    public int getBombRange() {
+        return bombRange;
     }
 
     public boolean isHadPrincess() {
@@ -85,7 +122,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public final boolean canMove(Direction direction) {
         Decor pos = game.grid().get(direction.nextPosition(getPosition()));
         if(game.grid().inside(direction.nextPosition(getPosition())))
-            return !(pos instanceof Stone) && !(pos instanceof Tree) && !(pos instanceof Door && ((Door) pos).canOpen());
+            return !(pos instanceof Stone) && !(pos instanceof Tree) && !(pos instanceof Door && ((Door) pos).canOpen(game));
         return false;
     }
 
