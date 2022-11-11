@@ -83,6 +83,12 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         numberDec.remove();
     }
 
+    public void take(Heart lives){
+        System.out.println("Add lives");
+        this.lives ++;
+        lives.remove();
+    }
+
     public void doMove(Direction direction) {
         // This method is called only if the move is possible, do not check again
         Position nextPos = direction.nextPosition(getPosition());

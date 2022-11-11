@@ -6,8 +6,8 @@ public class MapLevelDefault extends MapLevel {
     private final static Entity[][] level1 = {
             {Empty, Empty, Empty, Empty, Empty, Empty, BombNumberDec, BombNumberInc, BombRangeDec, BombRangeInc, Empty, Empty},
             {Empty, Empty, Stone, Empty, Stone, Empty, Stone, Stone, Stone, Stone, Empty, Empty},
-            {Empty, Empty, Empty, Empty, Stone, Empty, Stone, Empty, Empty, Stone, Empty, Empty},
-            {Empty, Empty, Empty, Empty, Stone, Empty, Stone, Empty, Empty, Stone, Empty, Empty},
+            {Empty, Empty, Empty, Empty, Stone, Empty, Stone, Empty, Empty, Stone, Empty, Box},
+            {Empty, Empty, Empty, Empty, Stone, Heart, Stone, Empty, Empty, Stone, Empty, Empty},
             {Empty, Empty, Empty, Empty, Stone, Stone, Stone, Empty, Empty, Empty, Empty, Empty},
             {Empty, Empty, Empty, Empty, Empty, Empty, Monster, Key, Empty, Stone, Empty, Empty},
             {Empty, Tree, Empty, Tree, Empty, Empty, Empty, Empty, Empty, Stone, Empty, Empty},
