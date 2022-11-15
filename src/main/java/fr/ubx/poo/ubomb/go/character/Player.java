@@ -59,33 +59,33 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public void take(BombRangeDec rangeDec) {
         System.out.println("Decrement bomb range");
         if (bombRange > 1)
-            bombRange --;
+            bombRange--;
         rangeDec.remove();
     }
 
-    public void take(BombRangeInc rangeInc){
+    public void take(BombRangeInc rangeInc) {
         System.out.println("Increment bomb range");
-        bombRange ++;
+        bombRange++;
         rangeInc.remove();
     }
 
-    public void take(BombNbInc numberInc){
+    public void take(BombNbInc numberInc) {
         System.out.println("Bomb bag capacity +1");
-        bombCapacity ++;
+        bombCapacity++;
         availableBomb = bombCapacity;
         numberInc.remove();
     }
 
-    public void take(BombNbDec numberDec){
+    public void take(BombNbDec numberDec) {
         System.out.println("Bomb bag capacity -1");
-        bombCapacity --;
+        bombCapacity--;
         availableBomb = bombCapacity;
         numberDec.remove();
     }
 
-    public void take(Heart lives){
+    public void take(Heart lives) {
         System.out.println("Add lives");
-        this.lives ++;
+        this.lives++;
         lives.remove();
     }
 
@@ -94,9 +94,9 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
         if (next instanceof Bonus bonus) {
-                bonus.takenBy(this);
+            bonus.takenBy(this);
         }
-        if (next instanceof Monster){
+        if (next instanceof Monster) {
             lives -= 1;
         }
         setPosition(nextPos);
@@ -141,8 +141,16 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     public final boolean canMove(Direction direction) {
         Decor pos = game.grid().get(direction.nextPosition(getPosition()));
-        if(game.grid().inside(direction.nextPosition(getPosition())))
+        if (game.grid().inside(direction.nextPosition(getPosition()))) {
+            if (pos instanceof Box) {
+                Box box = (Box) pos;
+                if (box.canMove(direction)){
+                    box.doMove(direction);
+                }
+
+            }
             return !(pos instanceof Stone) && !(pos instanceof Tree);
+        }
         return false;
     }
 
