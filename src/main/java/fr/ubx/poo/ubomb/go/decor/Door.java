@@ -3,6 +3,8 @@ package fr.ubx.poo.ubomb.go.decor;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 
+import javax.lang.model.util.Elements;
+
 public class Door extends Decor{
 
     private boolean isOpen;
@@ -39,8 +41,9 @@ public class Door extends Decor{
         return isPrev;
     }
 
-    public void open() {
+    public void open(Game game) {
         isOpen = true;
+        game.grid().get(getPosition()).setModified(true);
     }
 
     public boolean canOpen(Game game){

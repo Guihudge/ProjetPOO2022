@@ -6,6 +6,7 @@ package fr.ubx.poo.ubomb.go.character;
 
 import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
+import fr.ubx.poo.ubomb.game.Level;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
@@ -156,8 +157,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     public void openDoor(){
         if(game.grid().get(getPosition()) instanceof Door)
-            if(((Door) game.grid().get(getPosition())).canOpen(game))
-                ((Door) game.grid().get(getPosition())).open();
+            if(((Door) game.grid().get(getPosition())).canOpen(game)) {
+                ((Door) game.grid().get(getPosition())).open(game);
+                keys--;
+            }
     }
 
     public void update(long now) {
