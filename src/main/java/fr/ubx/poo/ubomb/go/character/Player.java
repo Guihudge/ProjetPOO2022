@@ -58,7 +58,8 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     public void take(BombRangeDec rangeDec) {
         System.out.println("Decrement bomb range");
-        bombRange --;
+        if (bombRange > 1)
+            bombRange --;
         rangeDec.remove();
     }
 
@@ -71,13 +72,21 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public void take(BombNbInc numberInc){
         System.out.println("Bomb bag capacity +1");
         bombCapacity ++;
+        availableBomb = bombCapacity;
         numberInc.remove();
     }
 
     public void take(BombNbDec numberDec){
         System.out.println("Bomb bag capacity -1");
         bombCapacity --;
+        availableBomb = bombCapacity;
         numberDec.remove();
+    }
+
+    public void take(Heart lives){
+        System.out.println("Add lives");
+        this.lives ++;
+        lives.remove();
     }
 
     public void doMove(Direction direction) {
