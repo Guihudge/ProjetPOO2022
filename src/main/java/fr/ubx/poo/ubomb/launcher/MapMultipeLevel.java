@@ -6,7 +6,7 @@ import java.util.Properties;
 
 public class MapMultipeLevel extends MapLevel{
     int numberOfLevel;
-    public static final Entity[][][] levels;
+    public static final Entity[][][] levels = new Entity[1][1][1];
 
     public MapMultipeLevel(Reader file) throws IOException {
         super(0,0);

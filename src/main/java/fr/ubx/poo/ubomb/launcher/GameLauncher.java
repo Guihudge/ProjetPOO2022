@@ -37,6 +37,5 @@ public class GameLauncher {
         return new Configuration(player_pos, bombBagCapacity, playerLives, playerInvisibilityTime, monsterVelocity, monsterInvisibilityTime);
     }
 
-    private
 
 }
