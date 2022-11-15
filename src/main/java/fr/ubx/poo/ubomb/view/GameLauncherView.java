@@ -42,6 +42,8 @@ public class GameLauncherView extends BorderPane {
 
         // Load from file
         loadItem.setOnAction(e -> {
+            fileChooser.setTitle("Load Wrold");
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("World file", "*.properties"));
             File file = fileChooser.showOpenDialog(stage);
             if (file != null) {
                 // TODO
