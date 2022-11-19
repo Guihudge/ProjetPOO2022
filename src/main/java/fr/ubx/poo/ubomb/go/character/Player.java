@@ -11,6 +11,7 @@ import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
 import fr.ubx.poo.ubomb.go.TakeVisitor;
+import fr.ubx.poo.ubomb.go.Takeable;
 import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 
@@ -94,8 +95,8 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         // This method is called only if the move is possible, do not check again
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
-        if (next instanceof Bonus bonus) {
-            bonus.takenBy(this);
+        if (next instanceof Takeable takeable) {
+            takeable.takenBy(this);
         }
         if (next instanceof Monster) {
             lives -= 1;
