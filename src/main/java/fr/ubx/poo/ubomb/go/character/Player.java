@@ -101,6 +101,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         if (next instanceof Monster) {
             lives -= 1;
         }
+        if (next instanceof Box box){
+            game.grid().set(getPosition(), box);
+            box.setPosition(nextPos);
+        }
         setPosition(nextPos);
     }
 
@@ -160,9 +164,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public void update(long now) {
         if (moveRequested) {
             if (canMove(direction)) {
-                if(game.grid().get(direction.nextPosition(getPosition())) instanceof Box box)
-                    if(canMove(direction))
-                        box.doMove(direction);
                 doMove(direction);
             }
         }

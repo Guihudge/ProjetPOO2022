@@ -112,8 +112,10 @@ public class Level implements Grid {
     public void set(Position position, Decor decor) {
         if (!inside(position))
             throw new IllegalArgumentException("Illegal Position");
-        if (decor != null)
+        if (decor != null) {
             elements.put(position, decor);
+            System.out.println("Position set");
+        }
     }
 
 
