@@ -156,7 +156,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
                     System.out.println(boxpos.getPosition());
                 System.out.println(pos.getPosition());
                 if(game.grid().inside(direction.nextPosition(pos.getPosition())))
-                    return !(boxpos instanceof Stone) && !(boxpos instanceof Tree);
+                    return game.grid().get(direction.nextPosition(getPosition(),2)) == null;
             }else
                 return !(pos instanceof Stone) && !(pos instanceof Tree);
         }
