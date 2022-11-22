@@ -150,7 +150,15 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public final boolean canMove(Direction direction) {
         Decor pos = game.grid().get(direction.nextPosition(getPosition()));
         if (game.grid().inside(direction.nextPosition(getPosition()))) {
-            return !(pos instanceof Stone) && !(pos instanceof Tree);
+            if(pos instanceof Box){
+                Decor boxpos = game.grid().get(direction.nextPosition(pos.getPosition()));
+                if(boxpos != null)
+                    System.out.println(boxpos.getPosition());
+                System.out.println(pos.getPosition());
+                if(game.grid().inside(direction.nextPosition(pos.getPosition())))
+                    return !(boxpos instanceof Stone) && !(boxpos instanceof Tree);
+            }else
+                return !(pos instanceof Stone) && !(pos instanceof Tree);
         }
         return false;
     }
