@@ -2,30 +2,39 @@ package fr.ubx.poo.ubomb.launcher;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Properties;
 
-public class MapMultipeLevel extends MapLevel{
+public class MapMultipeLevel{
     int numberOfLevel;
-    public static final Entity[][][] levels = new Entity[1][1][1];
+    ArrayList<MapLevel> levels = new ArrayList<>();
 
-    public MapMultipeLevel(Reader file) throws IOException {
-        super(0,0);
-        Properties config = new Properties();
-        config.load(file);
+    public MapMultipeLevel(Properties config) throws IOException {
         this.numberOfLevel = Integer.parseInt(config.getProperty("levels", "1"));
         boolean compressedString = Boolean.parseBoolean(config.getProperty("compression", "false"));
 
         for (int i = 0; i < numberOfLevel; i++) {
-            String propName = "level" + i;
+            String propName = "level" + (i+1);
+            String level = config.getProperty(propName);
+            System.out.println("propName: " + propName + "\n levelString: " + level + "\n");
             if (compressedString){
-                levels[i] = loadFromString(decompressString(config.getProperty(propName)));
+                levels.add(loadFromString(decompressString(level)));
             }
             else {
-                levels[i] = loadFromString(config.getProperty(propName));
+                levels.add(loadFromString(level));
             }
         }
+        System.out.println("load " + levels.size() + "maps");
+    }
 
-
+    public MapLevel getLevel(int levelId){
+        if (levelId <= 0 || levelId > levelId){
+            System.err.println("Invalid level ID in MapMultipleLevel!");
+            return null;
+        }
+        else {
+            return levels.get(levelId-1);
+        }
     }
 
     private String decompressString(String s){
@@ -44,17 +53,16 @@ public class MapMultipeLevel extends MapLevel{
         return  decompressedString.toString();
     }
 
-    private Entity[][] loadFromString(String s){
+    private MapLevel loadFromString(String s){
 
         String[] world = s.split("x");
         int nbLine = world.length;
         int nbCol = world[0].length();
-
-        Entity[][] level = new Entity[nbCol][nbLine];
+        MapLevel level = new MapLevel(nbCol, nbLine);
         for (int y = 0; y<nbLine; y++){
             char[] line = world[y].toCharArray();
             for (int x = 0; x<nbCol; x++) {
-                level[x][y] = Entity.fromCode(line[x]);
+                level.set(x,y,Entity.fromCode(line[x]));
         }}
         return level;
     }

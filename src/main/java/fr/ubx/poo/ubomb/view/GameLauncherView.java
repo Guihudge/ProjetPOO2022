@@ -4,6 +4,7 @@ import fr.ubx.poo.ubomb.engine.GameEngine;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.launcher.GameLauncher;
 import fr.ubx.poo.ubomb.launcher.MapLevel;
+import fr.ubx.poo.ubomb.launcher.MapMultipeLevel;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
@@ -46,8 +47,14 @@ public class GameLauncherView extends BorderPane {
             fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("World file", "*.properties"));
             File file = fileChooser.showOpenDialog(stage);
             if (file != null) {
-                // TODO
-                System.err.println("[TODO] Not implemented");
+                try {
+                    FileReader reader = new FileReader(file);
+                    Game game = GameLauncher.load(reader);
+                    GameEngine engine = new GameEngine(game, stage);
+                    engine.start();
+                } catch (IOException exept) {
+                    throw new RuntimeException(exept);
+                }
             }
         });
 

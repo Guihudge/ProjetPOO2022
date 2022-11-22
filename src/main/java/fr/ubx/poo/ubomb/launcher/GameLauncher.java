@@ -16,23 +16,26 @@ public class GameLauncher {
         return new Game(configuration, new Level(new MapLevelDefault()));
     }
 
-    public static Game load(Reader file){
-
-        return null;
-    }
-
-    private Configuration loadConfigFromFile(Reader file) throws IOException {
+    public static Game load(Reader file) throws IOException{
         Properties config = new Properties();
         config.load(file);
+        MapMultipeLevel levels = new MapMultipeLevel(config);
+        Configuration GameConfig = loadConfigFromFile(config);
+        return new Game(GameConfig, new Level(levels.getLevel(1)));
+    }
+
+    private static Configuration loadConfigFromFile(Properties config) throws IOException {
+
         String player = config.getProperty("player");
-        int bombBagCapacity = Integer.getInteger( config.getProperty("bombBagCapacity", "3"));
-        int playerLives = Integer.getInteger( config.getProperty("playerLives", "5"));
-        int playerInvisibilityTime = Integer.getInteger( config.getProperty("playerInvisibilityTime", "4000"));
-        int monsterVelocity = Integer.getInteger( config.getProperty("monsterVelocity", "5"));
-        int monsterInvisibilityTime = Integer.getInteger( config.getProperty("monsterInvisibilityTime", "1000"));
-        int player_x = Integer.getInteger(player.split("x")[0]);
-        int player_y = Integer.getInteger(player.split("x")[1]);
+        int bombBagCapacity = Integer.parseInt( config.getProperty("bombBagCapacity", "3"));
+        int playerLives = Integer.parseInt( config.getProperty("playerLives", "5"));
+        int playerInvisibilityTime = Integer.parseInt( config.getProperty("playerInvisibilityTime", "4000"));
+        int monsterVelocity = Integer.parseInt( config.getProperty("monsterVelocity", "5"));
+        int monsterInvisibilityTime = Integer.parseInt( config.getProperty("monsterInvisibilityTime", "1000"));
+        int player_x = Integer.parseInt(player.split("x")[0]);
+        int player_y = Integer.parseInt(player.split("x")[1]);
         Position player_pos = new Position(player_x, player_y);
+
 
         return new Configuration(player_pos, bombBagCapacity, playerLives, playerInvisibilityTime, monsterVelocity, monsterInvisibilityTime);
     }
