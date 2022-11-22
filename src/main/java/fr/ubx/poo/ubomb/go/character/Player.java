@@ -15,6 +15,7 @@ import fr.ubx.poo.ubomb.go.TakeVisitor;
 import fr.ubx.poo.ubomb.go.Takeable;
 import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
+import fr.ubx.poo.ubomb.view.SpritePlayer;
 
 public class Player extends GameObject implements Movable, TakeVisitor {
 
@@ -45,6 +46,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         this.bombRange = 1;
         this.keys = 0;
         this.hadPrincess = false;
+        this.timer = new Timer(game.configuration().playerInvisibilityTime());
     }
 
 
@@ -103,7 +105,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         }
         if (next instanceof Monster && !damagetaken) {
             lives -= 1;
-            timer = new Timer(game.configuration().playerInvisibilityTime());
+            timer.reset();
             timer.start();
             damagetaken = true;
         }
@@ -119,6 +121,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     public int getLives() {
         return lives;
+    }
+
+    public boolean isDamagetaken() {
+        return damagetaken;
     }
 
     public int getBombCapacity() {
@@ -187,8 +193,9 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
         if(damagetaken){
             timer.update(now);
-            if(timer.remaining() <= 0)
+            if(timer.remaining() <= 0) {
                 damagetaken = false;
+            }
         }
     }
 

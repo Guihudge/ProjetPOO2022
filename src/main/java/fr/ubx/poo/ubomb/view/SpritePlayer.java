@@ -19,6 +19,9 @@ public class SpritePlayer extends Sprite {
     public void updateImage() {
         Player player = (Player) getGameObject();
         Image image = ImageResourceFactory.getPlayer(player.getDirection()).getImage();
+        if(player.isDamagetaken()){
+            image = ImageResourceFactory.getPlayer(player.getDirection()).getImage();
+        }
         setImage(image);
     }
 }
