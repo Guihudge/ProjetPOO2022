@@ -1,13 +1,17 @@
 package fr.ubx.poo.ubomb.launcher;
 
+import fr.ubx.poo.ubomb.game.Grid;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Properties;
 
-public class MapMultipeLevel{
-    int numberOfLevel;
+public class MapMultipeLevel {
+    private int numberOfLevel;
     ArrayList<MapLevel> levels = new ArrayList<>();
+
+    private int levelID;
 
     public MapMultipeLevel(Properties config) throws IOException {
         this.numberOfLevel = Integer.parseInt(config.getProperty("levels", "1"));
@@ -35,6 +39,10 @@ public class MapMultipeLevel{
         else {
             return levels.get(levelId-1);
         }
+    }
+
+    public int getNumberOfLevel() {
+        return numberOfLevel;
     }
 
     private String decompressString(String s){

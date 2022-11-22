@@ -2,6 +2,7 @@ package fr.ubx.poo.ubomb.game;
 
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.launcher.MapMultipeLevel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,12 +11,24 @@ public class Game {
 
     private final Configuration configuration;
     private final Player player;
-    private final Grid grid;
+    private Grid grid;
+
+    private final MapMultipeLevel levelsList;
+
+    private Integer levelId = 1;
 
     public Game(Configuration configuration, Grid grid) {
         this.configuration = configuration;
         this.grid = grid;
+        levelsList = null;
         player = new Player(this, configuration.playerPosition());
+    }
+
+    public Game(Configuration configuration, MapMultipeLevel levelsList) {
+        this.configuration = configuration;
+        player = new Player(this, configuration.playerPosition());
+        this.levelsList = levelsList;
+        this.grid = new Level(levelsList.getLevel(levelId));
     }
 
     public Configuration configuration() {
@@ -36,6 +49,31 @@ public class Game {
 
     public Player player() {
         return this.player;
+    }
+
+    public void nextLevel(){
+        if (levelsList == null){
+            System.err.println("No multiple level!");
+        }
+        if (levelId+1 > levelsList.getNumberOfLevel()){
+            System.err.println("Level index out of range!");
+        }
+        levelId++;
+        this.grid = new Level(levelsList.getLevel(levelId));
+    }
+
+    public void prevLevel(){
+        if (levelsList == null){
+            System.err.println("No multiple level!");
+            return;
+        }
+        if (levelId-1 <= 0){
+            System.err.println("Level index out of range!");
+            return;
+        }
+        levelId--;
+        this.grid = new Level(levelsList.getLevel(levelId));
+
     }
 
 

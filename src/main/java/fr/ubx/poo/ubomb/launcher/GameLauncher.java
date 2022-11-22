@@ -21,7 +21,7 @@ public class GameLauncher {
         config.load(file);
         MapMultipeLevel levels = new MapMultipeLevel(config);
         Configuration GameConfig = loadConfigFromFile(config);
-        return new Game(GameConfig, new Level(levels.getLevel(1)));
+        return new Game(GameConfig, levels);
     }
 
     private static Configuration loadConfigFromFile(Properties config) throws IOException {
