@@ -144,23 +144,57 @@ public final class GameEngine {
         } else if (input.isMoveUp()) {
             player.requestMove(Direction.UP);
         } else if (input.isKey()) {
-            player.openDoor();
             if (game.grid().get(player.getPosition()) instanceof Door) {
                 Door door = (Door) game.grid().get(player.getPosition());
+                if (player.getKeys() >= 1 && !door.getIsOpen()){
+                    door.open();
+                    door.setModified(true);
+                    player.useKey();
+                }
+                Position playerPos = new Position(0,0);
                 if (door.getIsOpen()) {
-                    if (!door.getIsPrev())
+                    if (!door.getIsPrev()) {
                         game.nextLevel();
-
-                    if (door.getIsPrev())
+                        playerPos = getNewPlayerPosition();
+                    }
+                    if (door.getIsPrev()) {
                         game.prevLevel();
-
+                        playerPos = getPrevPlayerPosition();
+                    }
                     initialize();
+                    player.setPosition(playerPos);
                 }
             }
         }
         input.clear();
     }
 
+    private Position getNewPlayerPosition(){
+        for (int x = 0; x < game.grid().width(); x++){
+            for(int y = 0; y < game.grid().height();y++){
+                if (game.grid().get(new Position(x,y)) instanceof Door){
+                    Door door = (Door) game.grid().get(new Position(x,y));
+                    if (door.getIsPrev()){
+                        return new Position(x,y);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    private Position getPrevPlayerPosition(){
+        for (int x = 0; x < game.grid().width(); x++){
+            for(int y = 0; y < game.grid().height();y++){
+                if (game.grid().get(new Position(x,y)) instanceof Door){
+                    Door door = (Door) game.grid().get(new Position(x,y));
+                    if (!door.getIsPrev()){
+                        return new Position(x,y);
+                    }
+                }
+            }
+        }
+        return null;
+    }
     private void showMessage(String msg, Color color) {
         Text waitingForKey = new Text(msg);
         waitingForKey.setTextAlignment(TextAlignment.CENTER);

@@ -41,9 +41,8 @@ public class Door extends Decor{
         return isPrev;
     }
 
-    public void open(Game game) {
+    public void open() {
         isOpen = true;
-        game.grid().get(getPosition()).setModified(true);
     }
 
     public boolean canOpen(Game game){

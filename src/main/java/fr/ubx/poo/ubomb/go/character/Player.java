@@ -143,6 +143,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         return availableBomb;
     }
 
+    public void useKey(){
+        keys --;
+    }
+
     public void setAvailableBomb(int availableBomb) {
         this.availableBomb = availableBomb;
     }
@@ -173,14 +177,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
                 return !(pos instanceof Stone) && !(pos instanceof Tree);
         }
         return false;
-    }
-
-    public void openDoor(){
-        if(game.grid().get(getPosition()) instanceof Door)
-            if(((Door) game.grid().get(getPosition())).canOpen(game)) {
-                ((Door) game.grid().get(getPosition())).open(game);
-                keys--;
-            }
     }
 
     public void update(long now) {
