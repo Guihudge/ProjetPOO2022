@@ -8,6 +8,7 @@ import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.view.ImageResource;
 import fr.ubx.poo.ubomb.view.Sprite;
 import fr.ubx.poo.ubomb.view.SpriteFactory;
@@ -74,6 +75,7 @@ public final class GameEngine {
         statusBar = new StatusBar(root, sceneWidth, sceneHeight, game);
 
         // Create sprites
+        sprites.clear();
         for (var decor : game.grid().values()) {
             sprites.add(SpriteFactory.create(layer, decor));
             decor.setModified(true);
@@ -143,6 +145,18 @@ public final class GameEngine {
             player.requestMove(Direction.UP);
         } else if (input.isKey()) {
             player.openDoor();
+            if (game.grid().get(player.getPosition()) instanceof Door) {
+                Door door = (Door) game.grid().get(player.getPosition());
+                if (door.getIsOpen()) {
+                    if (!door.getIsPrev())
+                        game.nextLevel();
+
+                    if (door.getIsPrev())
+                        game.prevLevel();
+
+                    initialize();
+                }
+            }
         }
         input.clear();
     }
@@ -174,7 +188,7 @@ public final class GameEngine {
             showMessage("Perdu!", Color.RED);
         }
 
-        if (player.isHadPrincess()){
+        if (player.isHadPrincess()) {
             gameLoop.stop();
             showMessage("You Win", Color.GREEN);
         }

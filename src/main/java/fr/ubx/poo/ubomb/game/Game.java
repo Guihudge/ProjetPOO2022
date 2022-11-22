@@ -28,7 +28,7 @@ public class Game {
         this.configuration = configuration;
         player = new Player(this, configuration.playerPosition());
         this.levelsList = levelsList;
-        this.grid = new Level(levelsList.getLevel(levelId));
+        this.grid = levelsList.getLevel(levelId);
     }
 
     public Configuration configuration() {
@@ -59,7 +59,7 @@ public class Game {
             System.err.println("Level index out of range!");
         }
         levelId++;
-        this.grid = new Level(levelsList.getLevel(levelId));
+        this.grid = levelsList.getLevel(levelId);
     }
 
     public void prevLevel(){
@@ -72,7 +72,7 @@ public class Game {
             return;
         }
         levelId--;
-        this.grid = new Level(levelsList.getLevel(levelId));
+        this.grid = levelsList.getLevel(levelId);
 
     }
 
