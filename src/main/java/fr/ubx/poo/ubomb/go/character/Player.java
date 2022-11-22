@@ -4,6 +4,7 @@
 
 package fr.ubx.poo.ubomb.go.character;
 
+import fr.ubx.poo.ubomb.engine.Timer;
 import fr.ubx.poo.ubomb.game.Direction;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Level;
@@ -20,6 +21,8 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     private Direction direction;
     private boolean moveRequested = false;
     private int lives;
+    private boolean damagetaken = false;
+    private Timer timer;
     private int keys;
 
     private int bombCapacity;
@@ -98,8 +101,11 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         if (next instanceof Takeable takeable) {
             takeable.takenBy(this);
         }
-        if (next instanceof Monster) {
+        if (next instanceof Monster && !damagetaken) {
             lives -= 1;
+            timer = new Timer(game.configuration().playerInvisibilityTime());
+            timer.start();
+            damagetaken = true;
         }
         if (next instanceof Box box){
             Position boxpos = direction.nextPosition(box.getPosition());
@@ -178,6 +184,12 @@ public class Player extends GameObject implements Movable, TakeVisitor {
             }
         }
         moveRequested = false;
+
+        if(damagetaken){
+            timer.update(now);
+            if(timer.remaining() <= 0)
+                damagetaken = false;
+        }
     }
 
     @Override
