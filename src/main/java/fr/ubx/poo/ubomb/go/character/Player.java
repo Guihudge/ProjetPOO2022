@@ -102,8 +102,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
             lives -= 1;
         }
         if (next instanceof Box box){
-            game.grid().set(getPosition(), box);
-            box.setPosition(nextPos);
+            Position boxpos = direction.nextPosition(box.getPosition());
+            game.grid().set(boxpos, box);
+            game.grid().remove(nextPos);
+            box.setPosition(boxpos);
         }
         setPosition(nextPos);
     }
