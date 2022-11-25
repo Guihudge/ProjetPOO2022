@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 
 public class SpritePlayer extends Sprite {
+    private boolean temp = false;
 
     public SpritePlayer(Pane layer, Player player) {
         super(layer, null, player);
@@ -20,7 +21,12 @@ public class SpritePlayer extends Sprite {
         Player player = (Player) getGameObject();
         Image image = ImageResourceFactory.getPlayer(player.getDirection()).getImage();
         if(player.isDamagetaken()){
-            image = ImageResourceFactory.getPlayer(player.getDirection()).getImage();
+            if(temp) {
+                image = null;
+                temp = false;
+            }else{
+                temp = true;
+            }
         }
         setImage(image);
     }
