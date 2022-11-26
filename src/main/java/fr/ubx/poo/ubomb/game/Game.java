@@ -25,6 +25,7 @@ public class Game {
         this.grid = grid;
         levelsList = null;
         player = new Player(this, configuration.playerPosition());
+        updateMonster((Level) grid);
     }
 
     public Game(Configuration configuration, MapMultipeLevel levelsList) {
@@ -32,6 +33,7 @@ public class Game {
         player = new Player(this, configuration.playerPosition());
         this.levelsList = levelsList;
         this.grid = levelsList.getLevel(levelId);
+        updateMonster(levelsList.getLevel(levelId));
     }
 
     public Configuration configuration() {

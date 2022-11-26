@@ -101,12 +101,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         if (next instanceof Takeable takeable) {
             takeable.takenBy(this);
         }
-        if (next instanceof Monster && !damagetaken) {
-            lives -= 1;
-            timer.reset();
-            timer.start();
-            damagetaken = true;
-        }
+
         if (next instanceof Box box){
             Position boxpos = direction.nextPosition(box.getPosition());
             game.grid().set(boxpos, box);
@@ -202,6 +197,14 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         }
     }
 
+    public void takeDommage(){
+        if (!damagetaken) {
+            lives -= 1;
+            timer.reset();
+            timer.start();
+            damagetaken = true;
+        }
+    }
     @Override
     public void explode() {
         // TODO

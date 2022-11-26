@@ -11,6 +11,7 @@ import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
 import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.view.*;
+import fr.ubx.poo.ubomb.engine.Timer;
 import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -44,12 +45,15 @@ public final class GameEngine {
     private Pane layer;
     private Input input;
 
+    private Timer timer;
+
     public GameEngine(Game game, final Stage stage) {
         this.stage = stage;
         this.game = game;
         this.player = game.player();
         initialize();
         buildAndSetGameLoop();
+        timer = new Timer(1000 / game.configuration().monsterVelocity());
     }
 
     private void initialize() {
@@ -79,7 +83,7 @@ public final class GameEngine {
             decor.setModified(true);
         }
 
-        for (Monster monster: game.getMonsterList()) {
+        for (Monster monster : game.getMonsterList()) {
             sprites.add(new SpriteMonster(layer, monster));
         }
 
@@ -148,12 +152,12 @@ public final class GameEngine {
         } else if (input.isKey()) {
             if (game.grid().get(player.getPosition()) instanceof Door) {
                 Door door = (Door) game.grid().get(player.getPosition());
-                if (player.getKeys() >= 1 && !door.getIsOpen()){
+                if (player.getKeys() >= 1 && !door.getIsOpen()) {
                     door.open();
                     door.setModified(true);
                     player.useKey();
                 }
-                Position playerPos = new Position(0,0);
+                Position playerPos = new Position(0, 0);
                 if (door.getIsOpen()) {
                     if (!door.getIsPrev()) {
                         game.nextLevel();
@@ -173,32 +177,34 @@ public final class GameEngine {
         input.clear();
     }
 
-    private Position getNewPlayerPosition(){
-        for (int x = 0; x < game.grid().width(); x++){
-            for(int y = 0; y < game.grid().height();y++){
-                if (game.grid().get(new Position(x,y)) instanceof Door){
-                    Door door = (Door) game.grid().get(new Position(x,y));
-                    if (door.getIsPrev()){
-                        return new Position(x,y);
+    private Position getNewPlayerPosition() {
+        for (int x = 0; x < game.grid().width(); x++) {
+            for (int y = 0; y < game.grid().height(); y++) {
+                if (game.grid().get(new Position(x, y)) instanceof Door) {
+                    Door door = (Door) game.grid().get(new Position(x, y));
+                    if (door.getIsPrev()) {
+                        return new Position(x, y);
                     }
                 }
             }
         }
         return null;
     }
-    private Position getPrevPlayerPosition(){
-        for (int x = 0; x < game.grid().width(); x++){
-            for(int y = 0; y < game.grid().height();y++){
-                if (game.grid().get(new Position(x,y)) instanceof Door){
-                    Door door = (Door) game.grid().get(new Position(x,y));
-                    if (!door.getIsPrev()){
-                        return new Position(x,y);
+
+    private Position getPrevPlayerPosition() {
+        for (int x = 0; x < game.grid().width(); x++) {
+            for (int y = 0; y < game.grid().height(); y++) {
+                if (game.grid().get(new Position(x, y)) instanceof Door) {
+                    Door door = (Door) game.grid().get(new Position(x, y));
+                    if (!door.getIsPrev()) {
+                        return new Position(x, y);
                     }
                 }
             }
         }
         return null;
     }
+
     private void showMessage(String msg, Color color) {
         Text waitingForKey = new Text(msg);
         waitingForKey.setTextAlignment(TextAlignment.CENTER);
@@ -220,10 +226,24 @@ public final class GameEngine {
 
     private void update(long now) {
         player.update(now);
-        for (Monster monster: game.getMonsterList()) {
-            monster.update(now);
+        Position playerPos = player.getPosition();
+        if (!timer.isRunning()) {
+            timer.start();
         }
+        timer.update(now);
 
+        if (timer.remaining() <= 0) {
+            for (Monster monster : game.getMonsterList()) {
+                monster.update(now);
+                timer.reset();
+                timer.start();
+            }
+        }
+        for (Monster monster : game.getMonsterList()) {
+            if (playerPos.equals(monster.getPosition())) {
+                player.takeDommage();
+            }
+        }
         if (player.getLives() == 0) {
             gameLoop.stop();
             showMessage("Perdu!", Color.RED);
