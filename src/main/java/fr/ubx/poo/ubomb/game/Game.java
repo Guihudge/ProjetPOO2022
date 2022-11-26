@@ -1,6 +1,7 @@
 package fr.ubx.poo.ubomb.game;
 
 import fr.ubx.poo.ubomb.go.GameObject;
+import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
 import fr.ubx.poo.ubomb.launcher.MapMultipeLevel;
 
@@ -16,6 +17,8 @@ public class Game {
     private final MapMultipeLevel levelsList;
 
     private Integer levelId = 1;
+
+    private final List<Monster> monsterList = new LinkedList<>();
 
     public Game(Configuration configuration, Grid grid) {
         this.configuration = configuration;
@@ -51,6 +54,13 @@ public class Game {
         return this.player;
     }
 
+    private void updateMonster(Level level){
+        monsterList.clear();
+        for (Position monterPos: level.getMonsterPositionList()) {
+            monsterList.add(new Monster(this, monterPos, levelId/2));
+        }
+    }
+
     public void nextLevel(){
         if (levelsList == null){
             System.err.println("No multiple level!");
@@ -59,7 +69,9 @@ public class Game {
             System.err.println("Level index out of range!");
         }
         levelId++;
+        updateMonster(levelsList.getLevel(levelId));
         this.grid = levelsList.getLevel(levelId);
+
     }
 
     public void prevLevel(){
@@ -72,9 +84,12 @@ public class Game {
             return;
         }
         levelId--;
+        updateMonster(levelsList.getLevel(levelId));
         this.grid = levelsList.getLevel(levelId);
 
     }
 
-
+    public List<Monster> getMonsterList() {
+        return monsterList;
+    }
 }
