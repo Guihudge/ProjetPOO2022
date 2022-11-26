@@ -1,7 +1,7 @@
 package fr.ubx.poo.ubomb.game;
 
 import fr.ubx.poo.ubomb.go.GameObject;
-import fr.ubx.poo.ubomb.go.decor.Monster;
+import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
 import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.launcher.Entity;
@@ -17,6 +17,7 @@ public class Level implements Grid {
 
     private final MapLevel entities;
 
+    private List<Position> monsterPositionList = new LinkedList<>();
 
     private final Map<Position, Decor> elements = new HashMap<>();
 
@@ -30,6 +31,9 @@ public class Level implements Grid {
                 Position position = new Position(i, j);
                 Entity entity = entities.get(i, j);
                 switch (entity) {
+                    case Monster:
+                        monsterPositionList.add(position);
+                        break;
                     case Stone:
                         elements.put(position, new Stone(position));
                         break;
@@ -38,9 +42,6 @@ public class Level implements Grid {
                         break;
                     case Key:
                         elements.put(position, new Key(position));
-                        break;
-                    case Monster:
-                        elements.put(position, new Monster(position));
                         break;
                     case DoorPrevOpened:
                         elements.put(position, new Door(position, true, true));
@@ -118,5 +119,7 @@ public class Level implements Grid {
         }
     }
 
-
+    public List<Position> getMonsterPositionList() {
+        return monsterPositionList;
+    }
 }

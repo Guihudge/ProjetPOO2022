@@ -21,8 +21,6 @@ public final class SpriteFactory {
             return new Sprite(layer, TREE.getImage(), gameObject);
         if (gameObject instanceof Key)
             return new Sprite(layer, KEY.getImage(), gameObject);
-        if (gameObject instanceof Monster)
-            return new Sprite(layer, MONSTER_DOWN.getImage(), gameObject);
         if (gameObject instanceof Princess)
             return new Sprite(layer, PRINCESS.getImage(), gameObject);
         if (gameObject instanceof Door)
