@@ -165,6 +165,8 @@ public final class GameEngine {
                     player.setPosition(playerPos);
                 }
             }
+        }else if (input.isBomb()){
+            player.placeBomb();
         }
         input.clear();
     }
