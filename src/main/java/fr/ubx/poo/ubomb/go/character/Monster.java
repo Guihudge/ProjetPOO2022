@@ -5,10 +5,7 @@ import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.Movable;
-import fr.ubx.poo.ubomb.go.decor.Box;
-import fr.ubx.poo.ubomb.go.decor.Decor;
-import fr.ubx.poo.ubomb.go.decor.Stone;
-import fr.ubx.poo.ubomb.go.decor.Tree;
+import fr.ubx.poo.ubomb.go.decor.*;
 
 import java.util.Random;
 
@@ -42,7 +39,7 @@ public class Monster extends GameObject implements Movable {
     public boolean canMove(Direction direction) {
         Decor pos = game.grid().get(direction.nextPosition(getPosition()));
         if (game.grid().inside(direction.nextPosition(getPosition()))) {
-            if (pos instanceof Tree || pos instanceof Stone || pos instanceof Box){
+            if (pos instanceof Tree || pos instanceof Stone || pos instanceof Box || pos instanceof Door){
                 return true;
             }
             return false;
