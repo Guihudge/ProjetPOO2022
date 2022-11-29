@@ -14,6 +14,7 @@ import fr.ubx.poo.ubomb.go.TakeVisitor;
 import fr.ubx.poo.ubomb.go.Takeable;
 import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
+import fr.ubx.poo.ubomb.view.SpriteBomb;
 
 public class Player extends GameObject implements Movable, TakeVisitor {
 
@@ -28,6 +29,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     private int bombRange;
 
     private int availableBomb;
+    private boolean requestBomb = false;
 
     private boolean hadPrincess;
 
@@ -147,6 +149,11 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public Direction getDirection() {
         return direction;
     }
+    public boolean getRequestbomb(){return requestBomb;}
+
+    public void setRequestBomb(boolean requestBomb) {
+        this.requestBomb = requestBomb;
+    }
 
     public void requestMove(Direction direction) {
         if (direction != this.direction) {
@@ -154,6 +161,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
             setModified(true);
         }
         moveRequested = true;
+    }
+
+    public void requestBomb(){
+        requestBomb = true;
     }
 
     public final boolean canMove(Direction direction) {
@@ -170,15 +181,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
                 return !(pos instanceof Stone) && !(pos instanceof Tree);
         }
         return false;
-    }
-
-    public void placeBomb(){
-        if(availableBomb > 0){
-            availableBomb--;
-            Bomb bomb = new Bomb(game,getPosition());
-            game.grid().set(getPosition(),bomb);
-            setModified(true);
-        }
     }
 
     public void update(long now) {

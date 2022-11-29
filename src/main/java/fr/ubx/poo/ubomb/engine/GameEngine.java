@@ -9,6 +9,7 @@ import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
+import fr.ubx.poo.ubomb.go.decor.Bomb;
 import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.view.*;
 import fr.ubx.poo.ubomb.engine.Timer;
@@ -111,7 +112,7 @@ public final class GameEngine {
     }
 
     private void checkExplosions() {
-        // Check explosions of bombs
+
     }
 
     private void animateExplosion(Position src, Position dst) {
@@ -129,7 +130,17 @@ public final class GameEngine {
     }
 
     private void createNewBombs(long now) {
-        // Create a new Bomb is needed
+        if(player.getRequestbomb()){
+            player.setRequestBomb(false);
+            if (player.getAvailableBomb() > 0) {
+                player.setAvailableBomb(player.getAvailableBomb() - 1);
+                Bomb bomb = new Bomb(game, player.getPosition());
+                game.grid().set(player.getPosition(), bomb);
+                sprites.add(new SpriteBomb(layer,bomb));
+
+                player.setModified(true);
+            }
+        }
     }
 
     private void checkCollision(long now) {
@@ -176,7 +187,7 @@ public final class GameEngine {
                 }
             }
         }else if (input.isBomb()){
-            player.placeBomb();
+            player.requestBomb();
         }
         input.clear();
     }
