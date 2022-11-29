@@ -39,12 +39,9 @@ public class Monster extends GameObject implements Movable {
     public boolean canMove(Direction direction) {
         Decor pos = game.grid().get(direction.nextPosition(getPosition()));
         if (game.grid().inside(direction.nextPosition(getPosition()))) {
-            if (pos instanceof Tree || pos instanceof Stone || pos instanceof Box || pos instanceof Door){
-                return true;
-            }
-            return false;
+            return !(pos instanceof Tree) && !(pos instanceof Stone) && !(pos instanceof Box) && !(pos instanceof Door);
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -58,22 +55,14 @@ public class Monster extends GameObject implements Movable {
         Direction direction = UP;
         do {
             int randValue = rand.nextInt(maxRand);
-            switch (randValue){
-                case 0:
-                    direction = UP;
-                    break;
-                case 1:
-                    direction = DOWN;
-                    break;
-                case 2:
-                    direction = LEFT;
-                    break;
-                case 3:
-                    direction = RIGHT;
-                    break;
+            switch (randValue) {
+                case 0 -> direction = UP;
+                case 1 -> direction = DOWN;
+                case 2 -> direction = LEFT;
+                case 3 -> direction = RIGHT;
             }
 
-        }while (canMove(direction));
+        }while (!canMove(direction));
         this.direction = direction;
         doMove(direction);
     }
