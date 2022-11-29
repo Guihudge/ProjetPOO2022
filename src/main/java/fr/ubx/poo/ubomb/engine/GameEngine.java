@@ -251,8 +251,12 @@ public final class GameEngine {
             }
         }
 
-        for (Bomb bomb : bombs) {
-            bomb.update(now);
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).update(now);
+            if(bombs.get(i).isDeleted()) {
+                player.setAvailableBomb(player.getAvailableBomb() + 1);
+                bombs.remove(bombs.get(i));
+            }
         }
 
         checkCollision(now);
