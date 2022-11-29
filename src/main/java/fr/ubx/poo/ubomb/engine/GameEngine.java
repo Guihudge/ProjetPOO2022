@@ -12,7 +12,6 @@ import fr.ubx.poo.ubomb.go.character.Player;
 import fr.ubx.poo.ubomb.go.decor.Bomb;
 import fr.ubx.poo.ubomb.go.decor.Door;
 import fr.ubx.poo.ubomb.view.*;
-import fr.ubx.poo.ubomb.engine.Timer;
 import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -28,10 +27,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 public final class GameEngine {
@@ -41,12 +37,13 @@ public final class GameEngine {
     private final Player player;
     private final List<Sprite> sprites = new LinkedList<>();
     private final Set<Sprite> cleanUpSprites = new HashSet<>();
+    private List<Bomb> bombs = new ArrayList<>();
     private final Stage stage;
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
 
-    private Timer timer;
+    private Timer timerMonster;
 
     public GameEngine(Game game, final Stage stage) {
         this.stage = stage;
@@ -54,7 +51,7 @@ public final class GameEngine {
         this.player = game.player();
         initialize();
         buildAndSetGameLoop();
-        timer = new Timer(1000 / game.configuration().monsterVelocity());
+        timerMonster = new Timer(1000 / game.configuration().monsterVelocity());
     }
 
     private void initialize() {
@@ -137,7 +134,7 @@ public final class GameEngine {
                 Bomb bomb = new Bomb(game, player.getPosition());
                 game.grid().set(player.getPosition(), bomb);
                 sprites.add(new SpriteBomb(layer,bomb));
-
+                bombs.add(bomb);
                 player.setModified(true);
             }
         }
@@ -242,17 +239,20 @@ public final class GameEngine {
     private void update(long now) {
         player.update(now);
         Position playerPos = player.getPosition();
-        if (!timer.isRunning()) {
-            timer.start();
+        if (!timerMonster.isRunning()) {
+            timerMonster.start();
         }
-        timer.update(now);
+        timerMonster.update(now);
 
-        if (timer.remaining() <= 0) {
+        if (timerMonster.remaining() <= 0) {
             for (Monster monster : game.getMonsterList()) {
                 monster.update(now);
-                timer.reset();
-                timer.start();
+                timerMonster.start();
             }
+        }
+
+        for (Bomb bomb : bombs) {
+            bomb.update(now);
         }
 
         checkCollision(now);

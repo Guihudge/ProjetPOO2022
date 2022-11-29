@@ -203,7 +203,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public void takeDommage(){
         if (!damagetaken) {
             lives -= 1;
-            timer.reset();
             timer.start();
             damagetaken = true;
         }

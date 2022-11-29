@@ -16,9 +16,19 @@ public class Bomb extends Decor{
         timer.start();
     }
 
-    public int updateBomb(){
-        if(timer.remaining() <= 0)
-            detonationPhase--;
+    public int getDetonationPhase() {
         return detonationPhase;
+    }
+
+    public void update(long now){
+        timer.update(now);
+        if(timer.remaining() <= 0) {
+            detonationPhase--;
+            setModified(true);
+            if(detonationPhase > 0) {
+                timer.start();
+            }else
+                remove();
+        }
     }
 }

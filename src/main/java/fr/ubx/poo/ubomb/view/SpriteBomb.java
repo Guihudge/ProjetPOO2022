@@ -13,7 +13,7 @@ public class SpriteBomb extends Sprite {
 
     public void updateImage(){
         Bomb bomb = (Bomb) getGameObject();
-        Image image = ImageResourceFactory.getBomb(bomb.updateBomb()).getImage();
+        Image image = ImageResourceFactory.getBomb(bomb.getDetonationPhase()).getImage();
         setImage(image);
     }
 }

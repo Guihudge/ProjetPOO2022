@@ -19,10 +19,6 @@ public class Timer {
         remaining = duration;
     }
 
-    public void reset(){
-        this.remaining = duration;
-    }
-
     public void update(long now) {
         // time is in ns
         if (running) {
