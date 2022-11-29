@@ -254,6 +254,10 @@ public final class GameEngine {
         for (int i = 0; i < bombs.size(); i++) {
             bombs.get(i).update(now);
             if(bombs.get(i).isDeleted()) {
+                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x()+player.getBombRange(),bombs.get(i).getPosition().y()));
+                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x(),bombs.get(i).getPosition().y()+player.getBombRange()));
+                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x()-player.getBombRange(),bombs.get(i).getPosition().y()));
+                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x(),bombs.get(i).getPosition().y()-player.getBombRange()));
                 player.setAvailableBomb(player.getAvailableBomb() + 1);
                 bombs.remove(bombs.get(i));
             }
