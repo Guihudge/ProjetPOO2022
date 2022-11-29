@@ -194,6 +194,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
             if(timer.remaining() <= 0) {
                 damagetaken = false;
             }
+            setModified(true);
         }
     }
 
