@@ -133,7 +133,11 @@ public final class GameEngine {
     }
 
     private void checkCollision(long now) {
-        // Check a collision between a monster and the player
+        for (Monster monster : game.getMonsterList()) {
+            if (game.player().getPosition().equals(monster.getPosition())) {
+                player.takeDommage();
+            }
+        }
     }
 
     private void processInput(long now) {
@@ -239,11 +243,9 @@ public final class GameEngine {
                 timer.start();
             }
         }
-        for (Monster monster : game.getMonsterList()) {
-            if (playerPos.equals(monster.getPosition())) {
-                player.takeDommage();
-            }
-        }
+
+        checkCollision(now);
+
         if (player.getLives() == 0) {
             gameLoop.stop();
             showMessage("Perdu!", Color.RED);
