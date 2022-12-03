@@ -240,17 +240,6 @@ public final class GameEngine {
     private void update(long now) {
         player.update(now);
         Position playerPos = player.getPosition();
-        if (!timerMonster.isRunning()) {
-            timerMonster.start();
-        }
-        timerMonster.update(now);
-
-        if (timerMonster.remaining() <= 0) {
-            for (Monster monster : game.getMonsterList()) {
-                monster.update(now);
-                timerMonster.start();
-            }
-        }
 
         for (int i = 0; i < bombs.size(); i++) {
             bombs.get(i).update(now);
@@ -272,11 +261,27 @@ public final class GameEngine {
                     for (Monster monster : game.getMonsterList()) {
                         if (monster.getPosition().equals(pos)){
                             monster.explode();
+                            System.out.println("monstre touché!");
                         }
 
                     }
                 }
                 bombs.remove(bombs.get(i));
+            }
+        }
+
+        if (!timerMonster.isRunning()) {
+            timerMonster.start();
+        }
+        timerMonster.update(now);
+
+        if (timerMonster.remaining() <= 0) {
+            for (Monster monster : game.getMonsterList()) {
+                monster.update(now);
+                if (monster.isDeleted()){
+                    game.getMonsterList().remove(monster);
+                }
+                timerMonster.start();
             }
         }
 

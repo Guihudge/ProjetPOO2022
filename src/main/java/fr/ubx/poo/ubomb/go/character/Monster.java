@@ -70,7 +70,7 @@ public class Monster extends GameObject implements Movable {
     @Override
     public void explode() {
         this.life --;
-        if (life == 0){
+        if (life <= 0){
             this.remove();
         }
     }
