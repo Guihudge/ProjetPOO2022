@@ -244,28 +244,29 @@ public final class GameEngine {
         for (int i = 0; i < bombs.size(); i++) {
             bombs.get(i).update(now);
             if(bombs.get(i).isDeleted()) {
-                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x()+player.getBombRange(),bombs.get(i).getPosition().y()));
-                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x(),bombs.get(i).getPosition().y()+player.getBombRange()));
-                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x()-player.getBombRange(),bombs.get(i).getPosition().y()));
-                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x(),bombs.get(i).getPosition().y()-player.getBombRange()));
                 player.setAvailableBomb(player.getAvailableBomb() + 1);
                 for (Position pos: bombs.get(i).getExplosionAffectedPosition(player.getBombRange())) {
-                    if (playerPos.equals(pos)){
+                    if (playerPos.equals(pos)) {
                         player.takeDommage();
-                    }
-                    else {
+                    } else {
                         Decor tiles = game.grid().get(pos);
-                        if (tiles != null){
-                        tiles.explode();}
+                        if (tiles != null) {
+                            tiles.explode();
+                        }
                     }
                     for (Monster monster : game.getMonsterList()) {
-                        if (monster.getPosition().equals(pos)){
+                        if (monster.getPosition().equals(pos)) {
                             monster.explode();
                             System.out.println("monstre touché!");
                         }
 
                     }
                 }
+                int[] bombRealRange = bombs.get(i).getExplosionAnimationRange(player.getBombRange());
+                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x()+bombRealRange[0],bombs.get(i).getPosition().y()));
+                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x()-bombRealRange[1],bombs.get(i).getPosition().y()));
+                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x(),bombs.get(i).getPosition().y()+bombRealRange[2]));
+                animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x(),bombs.get(i).getPosition().y()-bombRealRange[3]));
                 bombs.remove(bombs.get(i));
             }
         }
