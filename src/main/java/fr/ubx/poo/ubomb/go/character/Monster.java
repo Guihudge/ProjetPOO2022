@@ -66,4 +66,12 @@ public class Monster extends GameObject implements Movable {
         this.direction = direction;
         doMove(direction);
     }
+
+    @Override
+    public void explode() {
+        this.life --;
+        if (life == 0){
+            this.remove();
+        }
+    }
 }

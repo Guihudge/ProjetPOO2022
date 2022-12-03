@@ -11,4 +11,8 @@ public class Box extends Decor {
 
     public Box (Game game, Position position) {super(game,position);}
 
+    @Override
+    public void explode() {
+        this.remove();
+    }
 }

@@ -5,6 +5,9 @@ import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 import fr.ubx.poo.ubomb.go.character.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Bomb extends Decor{
 
     private Timer timer;
@@ -30,5 +33,23 @@ public class Bomb extends Decor{
             }else
                 remove();
         }
+    }
+
+    public List<Position> getExplosionAffectedPosition(int explosionRange){
+        Position bombPos = this.getPosition();
+        List<Position> affectedTiles = new ArrayList<>();
+        affectedTiles.add(bombPos);
+        for (int i = 1; i <= explosionRange; i++){
+            affectedTiles.add(new Position(bombPos.x()+i, bombPos.y()));
+            affectedTiles.add(new Position(bombPos.x()-i, bombPos.y()));
+            affectedTiles.add(new Position(bombPos.x(), bombPos.y()+i));
+            affectedTiles.add(new Position(bombPos.x(), bombPos.y()-i));
+        }
+        return affectedTiles;
+    }
+
+    @Override
+    public void explode(){
+        remove();
     }
 }
