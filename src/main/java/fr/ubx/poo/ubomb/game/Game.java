@@ -1,9 +1,8 @@
 package fr.ubx.poo.ubomb.game;
 
-import fr.ubx.poo.ubomb.go.GameObject;
 import fr.ubx.poo.ubomb.go.character.Monster;
 import fr.ubx.poo.ubomb.go.character.Player;
-import fr.ubx.poo.ubomb.launcher.MapMultipeLevel;
+import fr.ubx.poo.ubomb.launcher.MapMultipleLevel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -14,7 +13,7 @@ public class Game {
     private final Player player;
     private Grid grid;
 
-    private final MapMultipeLevel levelsList;
+    private final MapMultipleLevel levelsList;
 
     private Integer levelId = 1;
 
@@ -28,7 +27,11 @@ public class Game {
         updateMonster((Level) grid);
     }
 
-    public Game(Configuration configuration, MapMultipeLevel levelsList) {
+    public Integer getLevelId() {
+        return levelId;
+    }
+
+    public Game(Configuration configuration, MapMultipleLevel levelsList) {
         this.configuration = configuration;
         player = new Player(this, configuration.playerPosition());
         this.levelsList = levelsList;
@@ -38,14 +41,6 @@ public class Game {
 
     public Configuration configuration() {
         return configuration;
-    }
-
-    // Returns the player, monsters and bomb at a given position
-    public List<GameObject> getGameObjects(Position position) {
-        List<GameObject> gos = new LinkedList<>();
-        if (player().getPosition().equals(position))
-            gos.add(player);
-        return gos;
     }
 
     public Grid grid() {

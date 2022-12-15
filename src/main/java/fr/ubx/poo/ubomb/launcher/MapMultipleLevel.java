@@ -1,25 +1,19 @@
 package fr.ubx.poo.ubomb.launcher;
 
-import fr.ubx.poo.ubomb.game.Grid;
 import fr.ubx.poo.ubomb.game.Level;
 import fr.ubx.poo.ubomb.go.character.Monster;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-public class MapMultipeLevel {
+public class MapMultipleLevel {
     private final int numberOfLevel;
-    private ArrayList<Level> levels = new ArrayList<>();
+    private final ArrayList<Level> levels = new ArrayList<>();
 
-    private ArrayList<List<Monster>> monsterList = new ArrayList<>();
+    private final ArrayList<List<Monster>> monsterList = new ArrayList<>();
 
-    private int levelID;
-
-    public MapMultipeLevel(Properties config) throws IOException {
+    public MapMultipleLevel(Properties config) {
         this.numberOfLevel = Integer.parseInt(config.getProperty("levels", "1"));
         boolean compressedString = Boolean.parseBoolean(config.getProperty("compression", "false"));
 
@@ -47,8 +41,12 @@ public class MapMultipeLevel {
         }
     }
     public List<Monster> getMonsterList(int levelId){
-        if (levelId <= 0 || levelId > numberOfLevel || levelId > monsterList.toArray().length){
+        if (levelId <= 0 || levelId > numberOfLevel){
             System.err.println("Invalid level ID in getMonsterList!");
+            return null;
+        }
+        if (levelId > monsterList.toArray().length){
+            System.out.println("creat new monster...");
             return null;
         }
         else {
@@ -72,9 +70,7 @@ public class MapMultipeLevel {
                 decompressedString.append(s.charAt(i));
             }
             else{
-                for (int rep = 1; rep < Integer.parseInt(String.valueOf(s.charAt(i))); rep++){
-                    decompressedString.append(s.charAt(i-1));
-                }
+                decompressedString.append(String.valueOf(s.charAt(i - 1)).repeat(Math.max(0, Integer.parseInt(String.valueOf(s.charAt(i))) - 1)));
             }
         }
         return  decompressedString.toString();

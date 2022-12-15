@@ -12,22 +12,11 @@ import java.util.Random;
 import static fr.ubx.poo.ubomb.game.Direction.*;
 
 public class Monster extends GameObject implements Movable {
-    private int life = 1;
+    private int life;
     private Direction direction = UP;
 
-    public Monster(Game game, Position position){
-        super(game, position);
-    }
     public Monster(Game game, Position position, int life){
         super(game, position);
-        this.life = life;
-    }
-
-    public int getLife() {
-        return life;
-    }
-
-    public void setLife(int life) {
         this.life = life;
     }
 
@@ -39,7 +28,7 @@ public class Monster extends GameObject implements Movable {
     public boolean canMove(Direction direction) {
         Decor pos = game.grid().get(direction.nextPosition(getPosition()));
         if (game.grid().inside(direction.nextPosition(getPosition()))) {
-            return !(pos instanceof Tree) && !(pos instanceof Stone) && !(pos instanceof Box) && !(pos instanceof Door);
+            return pos == null;
         }
         return false;
     }

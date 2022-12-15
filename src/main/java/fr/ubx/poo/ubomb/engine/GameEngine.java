@@ -38,13 +38,13 @@ public final class GameEngine {
     private final Player player;
     private final List<Sprite> sprites = new LinkedList<>();
     private final Set<Sprite> cleanUpSprites = new HashSet<>();
-    private List<Bomb> bombs = new ArrayList<>();
+    private final List<Bomb> bombs = new ArrayList<>();
     private final Stage stage;
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
 
-    private Timer timerMonster;
+    private final Timer timerMonster;
 
     public GameEngine(Game game, final Stage stage) {
         this.stage = stage;
@@ -52,7 +52,7 @@ public final class GameEngine {
         this.player = game.player();
         initialize();
         buildAndSetGameLoop();
-        timerMonster = new Timer(10000 / game.configuration().monsterVelocity());
+        timerMonster = new Timer(10000 / ((long) game.configuration().monsterVelocity() *game.getLevelId()));
     }
 
     private void initialize() {
@@ -120,9 +120,7 @@ public final class GameEngine {
         tt.setFromY(src.y() * Sprite.size);
         tt.setToX(dst.x() * Sprite.size);
         tt.setToY(dst.y() * Sprite.size);
-        tt.setOnFinished(e -> {
-            layer.getChildren().remove(explosion);
-        });
+        tt.setOnFinished(e -> layer.getChildren().remove(explosion));
         layer.getChildren().add(explosion);
         tt.play();
     }
@@ -163,8 +161,7 @@ public final class GameEngine {
         } else if (input.isMoveUp()) {
             player.requestMove(Direction.UP);
         } else if (input.isKey()) {
-            if (game.grid().get(player.getPosition()) instanceof Door) {
-                Door door = (Door) game.grid().get(player.getPosition());
+            if (game.grid().get(player.getPosition()) instanceof Door door) {
                 if (player.getKeys() >= 1 && !door.getIsOpen()) {
                     door.open();
                     door.setModified(true);
@@ -193,8 +190,7 @@ public final class GameEngine {
     private Position getNewPlayerPosition() {
         for (int x = 0; x < game.grid().width(); x++) {
             for (int y = 0; y < game.grid().height(); y++) {
-                if (game.grid().get(new Position(x, y)) instanceof Door) {
-                    Door door = (Door) game.grid().get(new Position(x, y));
+                if (game.grid().get(new Position(x, y)) instanceof Door door) {
                     if (door.getIsPrev()) {
                         return new Position(x, y);
                     }
@@ -277,13 +273,24 @@ public final class GameEngine {
         timerMonster.update(now);
 
         if (timerMonster.remaining() <= 0) {
+            Iterator<Monster> monsterIterator = game.getMonsterList().iterator();
+            while (monsterIterator.hasNext()){
+                Monster monster = monsterIterator.next();
+                monster.update(now);
+                if (monster.isDeleted()){
+                    monsterIterator.remove();
+                }
+            }
+            /*
             for (Monster monster : game.getMonsterList()) {
                 monster.update(now);
                 if (monster.isDeleted()){
                     game.getMonsterList().remove(monster);
                 }
-                timerMonster.start();
-            }
+            }*/
+            timerMonster.start();
+
+
         }
 
         checkCollision(now);
