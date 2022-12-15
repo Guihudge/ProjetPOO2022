@@ -18,7 +18,7 @@ public class Game {
 
     private Integer levelId = 1;
 
-    private final List<Monster> monsterList = new LinkedList<>();
+    private List<Monster> monsterList = new LinkedList<>();
 
     public Game(Configuration configuration, Grid grid) {
         this.configuration = configuration;
@@ -56,18 +56,23 @@ public class Game {
         return this.player;
     }
 
-    private void updateMonster(Level level){
-        monsterList.clear();
-        for (Position monterPos: level.getMonsterPositionList()) {
-            monsterList.add(new Monster(this, monterPos, levelId/2));
+    private void updateMonster(Level level) {
+        List<Monster> monsters = levelsList.getMonsterList(levelId);
+        if (monsters == null) {
+            monsters = new LinkedList<>();
+            for (Position monterPos : level.getMonsterPositionList()) {
+                monsters.add(new Monster(this, monterPos, levelId / 2));
+            }
+            levelsList.addMonsterList(monsters,levelId);
         }
+        monsterList = monsters;
     }
 
-    public void nextLevel(){
-        if (levelsList == null){
+    public void nextLevel() {
+        if (levelsList == null) {
             System.err.println("No multiple level!");
         }
-        if (levelId+1 > levelsList.getNumberOfLevel()){
+        if (levelId + 1 > levelsList.getNumberOfLevel()) {
             System.err.println("Level index out of range!");
         }
         levelId++;
@@ -76,12 +81,12 @@ public class Game {
 
     }
 
-    public void prevLevel(){
-        if (levelsList == null){
+    public void prevLevel() {
+        if (levelsList == null) {
             System.err.println("No multiple level!");
             return;
         }
-        if (levelId-1 <= 0){
+        if (levelId - 1 <= 0) {
             System.err.println("Level index out of range!");
             return;
         }

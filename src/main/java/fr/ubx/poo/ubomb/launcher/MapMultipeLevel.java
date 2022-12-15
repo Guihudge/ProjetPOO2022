@@ -2,15 +2,20 @@ package fr.ubx.poo.ubomb.launcher;
 
 import fr.ubx.poo.ubomb.game.Grid;
 import fr.ubx.poo.ubomb.game.Level;
+import fr.ubx.poo.ubomb.go.character.Monster;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Properties;
 
 public class MapMultipeLevel {
-    private int numberOfLevel;
-    ArrayList<Level> levels = new ArrayList<>();
+    private final int numberOfLevel;
+    private ArrayList<Level> levels = new ArrayList<>();
+
+    private ArrayList<List<Monster>> monsterList = new ArrayList<>();
 
     private int levelID;
 
@@ -33,13 +38,26 @@ public class MapMultipeLevel {
     }
 
     public Level getLevel(int levelId){
-        if (levelId <= 0 || levelId > levelId){
+        if (levelId <= 0 || levelId > numberOfLevel){
             System.err.println("Invalid level ID in MapMultipleLevel!");
             return null;
         }
         else {
             return levels.get(levelId-1);
         }
+    }
+    public List<Monster> getMonsterList(int levelId){
+        if (levelId <= 0 || levelId > numberOfLevel || levelId > monsterList.toArray().length){
+            System.err.println("Invalid level ID in getMonsterList!");
+            return null;
+        }
+        else {
+            return monsterList.get(levelId-1);
+        }
+    }
+
+    public void addMonsterList(List<Monster> newMonsterList, int id){
+        monsterList.add(id-1, newMonsterList);
     }
 
     public int getNumberOfLevel() {

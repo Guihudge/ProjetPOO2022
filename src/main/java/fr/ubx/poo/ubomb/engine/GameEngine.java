@@ -52,7 +52,7 @@ public final class GameEngine {
         this.player = game.player();
         initialize();
         buildAndSetGameLoop();
-        timerMonster = new Timer(1000 / game.configuration().monsterVelocity());
+        timerMonster = new Timer(10000 / game.configuration().monsterVelocity());
     }
 
     private void initialize() {
