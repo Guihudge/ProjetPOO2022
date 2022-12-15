@@ -3,8 +3,6 @@ package fr.ubx.poo.ubomb.view;
 import fr.ubx.poo.ubomb.engine.GameEngine;
 import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.launcher.GameLauncher;
-import fr.ubx.poo.ubomb.launcher.MapLevel;
-import fr.ubx.poo.ubomb.launcher.MapMultipeLevel;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;

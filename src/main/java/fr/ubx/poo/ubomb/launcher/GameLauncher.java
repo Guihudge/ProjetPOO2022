@@ -19,7 +19,7 @@ public class GameLauncher {
     public static Game load(Reader file) throws IOException{
         Properties config = new Properties();
         config.load(file);
-        MapMultipeLevel levels = new MapMultipeLevel(config);
+        MapMultipleLevel levels = new MapMultipleLevel(config);
         Configuration GameConfig = loadConfigFromFile(config);
         return new Game(GameConfig, levels);
     }
