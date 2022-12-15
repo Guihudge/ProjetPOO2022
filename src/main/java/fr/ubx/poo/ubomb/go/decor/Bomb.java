@@ -68,26 +68,40 @@ public class Bomb extends Decor{
         return affectedTiles;
     }
 
-    public List<Position> getExplosionAffectedPosition(int explosionRange){
+    public List<Position> getExplosionAffectedPosition(int explosionRange) {
         Position bombPos = this.getPosition();
         List<Position> affectedTiles = new ArrayList<>();
         affectedTiles.add(bombPos);
-        for (int i = 1; i <= explosionRange; i++){
-            if(!(game.grid().get(new Position(bombPos.x()+i, bombPos.y())) instanceof Tree || game.grid().get(new Position(bombPos.x()+i, bombPos.y())) instanceof Stone)) {
-                affectedTiles.add(new Position(bombPos.x()+i, bombPos.y()));
-            }else
+        for (int i = 1; i <= explosionRange; i++) {
+            if (!(game.grid().get(new Position(bombPos.x() + i, bombPos.y())) instanceof Tree || game.grid().get(new Position(bombPos.x() + i, bombPos.y())) instanceof Stone)) {
+                if (game.grid().get(new Position(bombPos.x() + i, bombPos.y())) != null && game.grid().get(new Position(bombPos.x() + i - 1, bombPos.y())) instanceof Box)
+                    break;
+                affectedTiles.add(new Position(bombPos.x() + i, bombPos.y()));
+            } else
                 break;
-            if(!(game.grid().get(new Position(bombPos.x()-i, bombPos.y())) instanceof Tree || game.grid().get(new Position(bombPos.x()-i, bombPos.y())) instanceof Stone)) {
-                affectedTiles.add(new Position(bombPos.x()-i, bombPos.y()));
-            }else
+        }
+        for (int i = 1; i <= explosionRange; i++) {
+            if (!(game.grid().get(new Position(bombPos.x() - i, bombPos.y())) instanceof Tree || game.grid().get(new Position(bombPos.x() - i, bombPos.y())) instanceof Stone)) {
+                if (game.grid().get(new Position(bombPos.x() - i, bombPos.y())) != null && game.grid().get(new Position(bombPos.x() - i + 1, bombPos.y())) instanceof Box)
+                    break;
+                affectedTiles.add(new Position(bombPos.x() - i, bombPos.y()));
+            } else
                 break;
-            if(!(game.grid().get(new Position(bombPos.x(), bombPos.y()+i)) instanceof Tree || game.grid().get(new Position(bombPos.x(), bombPos.y()+i)) instanceof Stone)) {
-                affectedTiles.add(new Position(bombPos.x(), bombPos.y()+i));
-            }else
+        }
+        for (int i = 1; i <= explosionRange; i++) {
+            if (!(game.grid().get(new Position(bombPos.x(), bombPos.y() + i)) instanceof Tree || game.grid().get(new Position(bombPos.x(), bombPos.y() + i)) instanceof Stone)) {
+                if (game.grid().get(new Position(bombPos.x(), bombPos.y() + i)) != null && game.grid().get(new Position(bombPos.x(), bombPos.y() + i - 1)) instanceof Box)
+                    break;
+                affectedTiles.add(new Position(bombPos.x(), bombPos.y() + i));
+            } else
                 break;
-            if(!(game.grid().get(new Position(bombPos.x(), bombPos.y()-i)) instanceof Tree || game.grid().get(new Position(bombPos.x(), bombPos.y()-i)) instanceof Stone)) {
-                affectedTiles.add(new Position(bombPos.x(), bombPos.y()-i));
-            }else
+        }
+        for (int i = 1; i <= explosionRange; i++) {
+            if (!(game.grid().get(new Position(bombPos.x(), bombPos.y() - i)) instanceof Tree || game.grid().get(new Position(bombPos.x(), bombPos.y() - i)) instanceof Stone)) {
+                if (game.grid().get(new Position(bombPos.x(), bombPos.y() - i)) != null && game.grid().get(new Position(bombPos.x(), bombPos.y() - i + 1)) instanceof Box)
+                    break;
+                affectedTiles.add(new Position(bombPos.x(), bombPos.y() - i));
+            } else
                 break;
         }
         return affectedTiles;
