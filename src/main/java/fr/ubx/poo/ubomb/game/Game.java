@@ -52,13 +52,21 @@ public class Game {
     }
 
     private void updateMonster(Level level) {
-        List<Monster> monsters = levelsList.getMonsterList(levelId);
-        if (monsters == null) {
+        List<Monster> monsters = null;
+        if (levelsList == null) {
             monsters = new LinkedList<>();
             for (Position monterPos : level.getMonsterPositionList()) {
                 monsters.add(new Monster(this, monterPos, levelId / 2));
             }
-            levelsList.addMonsterList(monsters,levelId);
+        } else {
+            monsters = levelsList.getMonsterList(levelId);
+            if (monsters == null) {
+                monsters = new LinkedList<>();
+                for (Position monterPos : level.getMonsterPositionList()) {
+                    monsters.add(new Monster(this, monterPos, levelId / 2));
+                }
+                levelsList.addMonsterList(monsters, levelId);
+            }
         }
         monsterList = monsters;
     }
