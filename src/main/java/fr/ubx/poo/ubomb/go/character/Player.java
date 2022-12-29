@@ -178,7 +178,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
                 if(game.grid().inside(direction.nextPosition(pos.getPosition())))
                     return game.grid().get(direction.nextPosition(getPosition(),2)) == null;
             }else
-                return !(pos instanceof Stone) && !(pos instanceof Tree);
+                return !(pos instanceof Stone) && !(pos instanceof Tree) && !(pos instanceof Door && !((Door) pos).getIsOpen());
         }
         return false;
     }

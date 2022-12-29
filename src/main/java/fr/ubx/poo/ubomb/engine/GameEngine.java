@@ -16,6 +16,7 @@ import fr.ubx.poo.ubomb.view.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -43,6 +44,7 @@ public final class GameEngine {
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
+    private Direction lastDirection;
 
     private final Timer timerMonster;
 
@@ -153,27 +155,37 @@ public final class GameEngine {
             Platform.exit();
             System.exit(0);
         } else if (input.isMoveDown()) {
+            lastDirection = Direction.DOWN;
             player.requestMove(Direction.DOWN);
         } else if (input.isMoveLeft()) {
+            lastDirection = Direction.LEFT;
             player.requestMove(Direction.LEFT);
         } else if (input.isMoveRight()) {
+            lastDirection = Direction.RIGHT;
             player.requestMove(Direction.RIGHT);
         } else if (input.isMoveUp()) {
+            lastDirection = Direction.UP;
             player.requestMove(Direction.UP);
         } else if (input.isKey()) {
-            if (game.grid().get(player.getPosition()) instanceof Door door) {
+            Decor doorNext = game.grid().get(player.getDirection().nextPosition(player.getPosition()));
+            Decor doorOnPlayer = game.grid().get(player.getPosition());
+            Position playerPos;
+            if(doorNext instanceof Door door){
                 if (player.getKeys() >= 1 && !door.getIsOpen()) {
                     door.open();
                     door.setModified(true);
                     player.useKey();
+                    game.nextLevel();
+                    playerPos = getNewPlayerPosition();
+                    initialize();
+                    player.setPosition(playerPos);
                 }
-                Position playerPos = new Position(0, 0);
+            } else if(doorOnPlayer instanceof Door door){
                 if (door.getIsOpen()) {
                     if (!door.getIsPrev()) {
                         game.nextLevel();
                         playerPos = getNewPlayerPosition();
-                    }
-                    if (door.getIsPrev()) {
+                    } else {
                         game.prevLevel();
                         playerPos = getPrevPlayerPosition();
                     }
