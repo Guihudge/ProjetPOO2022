@@ -20,15 +20,11 @@ public class MapMultipleLevel {
         for (int i = 0; i < numberOfLevel; i++) {
             String propName = "level" + (i+1);
             String level = config.getProperty(propName);
-            System.out.println("propName: " + propName + "\n levelString: " + level + "\n");
-            if (compressedString){
+            if (compressedString)
                 levels.add(new Level(loadFromString(decompressString(level))));
-            }
-            else {
+            else
                 levels.add(new Level(loadFromString(level)));
-            }
         }
-        System.out.println("load " + levels.size() + "maps");
     }
 
     public Level getLevel(int levelId){
@@ -36,22 +32,18 @@ public class MapMultipleLevel {
             System.err.println("Invalid level ID in MapMultipleLevel!");
             return null;
         }
-        else {
+        else
             return levels.get(levelId-1);
-        }
     }
     public List<Monster> getMonsterList(int levelId){
         if (levelId <= 0 || levelId > numberOfLevel){
             System.err.println("Invalid level ID in getMonsterList!");
             return null;
         }
-        if (levelId > monsterList.toArray().length){
-            System.out.println("creat new monster...");
+        if (levelId > monsterList.toArray().length)
             return null;
-        }
-        else {
+        else
             return monsterList.get(levelId-1);
-        }
     }
 
     public void addMonsterList(List<Monster> newMonsterList, int id){
@@ -64,20 +56,16 @@ public class MapMultipleLevel {
 
     private String decompressString(String s){
         StringBuilder decompressedString = new StringBuilder();
-
         for (int i = 0; i < s.length(); i++){
-            if (!Character.isDigit(s.charAt(i))){
+            if (!Character.isDigit(s.charAt(i)))
                 decompressedString.append(s.charAt(i));
-            }
-            else{
+            else
                 decompressedString.append(String.valueOf(s.charAt(i - 1)).repeat(Math.max(0, Integer.parseInt(String.valueOf(s.charAt(i))) - 1)));
-            }
         }
         return  decompressedString.toString();
     }
 
     private MapLevel loadFromString(String s){
-
         String[] world = s.split("x");
         int nbLine = world.length;
         int nbCol = world[0].length();
@@ -86,7 +74,8 @@ public class MapMultipleLevel {
             char[] line = world[y].toCharArray();
             for (int x = 0; x<nbCol; x++) {
                 level.set(x,y,Entity.fromCode(line[x]));
-        }}
+            }
+        }
         return level;
     }
 }

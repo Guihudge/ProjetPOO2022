@@ -16,7 +16,6 @@ import fr.ubx.poo.ubomb.view.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -44,7 +43,6 @@ public final class GameEngine {
     private StatusBar statusBar;
     private Pane layer;
     private Input input;
-    private Direction lastDirection;
 
     private final Timer timerMonster;
 
@@ -155,16 +153,12 @@ public final class GameEngine {
             Platform.exit();
             System.exit(0);
         } else if (input.isMoveDown()) {
-            lastDirection = Direction.DOWN;
             player.requestMove(Direction.DOWN);
         } else if (input.isMoveLeft()) {
-            lastDirection = Direction.LEFT;
             player.requestMove(Direction.LEFT);
         } else if (input.isMoveRight()) {
-            lastDirection = Direction.RIGHT;
             player.requestMove(Direction.RIGHT);
         } else if (input.isMoveUp()) {
-            lastDirection = Direction.UP;
             player.requestMove(Direction.UP);
         } else if (input.isKey()) {
             Decor doorNext = game.grid().get(player.getDirection().nextPosition(player.getPosition()));
@@ -213,16 +207,11 @@ public final class GameEngine {
     }
 
     private Position getPrevPlayerPosition() {
-        for (int x = 0; x < game.grid().width(); x++) {
-            for (int y = 0; y < game.grid().height(); y++) {
-                if (game.grid().get(new Position(x, y)) instanceof Door) {
-                    Door door = (Door) game.grid().get(new Position(x, y));
-                    if (!door.getIsPrev()) {
+        for (int x = 0; x < game.grid().width(); x++)
+            for (int y = 0; y < game.grid().height(); y++)
+                if (game.grid().get(new Position(x, y)) instanceof Door door)
+                    if (!door.getIsPrev())
                         return new Position(x, y);
-                    }
-                }
-            }
-        }
         return null;
     }
 
@@ -258,17 +247,12 @@ public final class GameEngine {
                         player.takeDommage();
                     } else {
                         Decor tiles = game.grid().get(pos);
-                        if (tiles != null) {
+                        if (tiles != null)
                             tiles.explode();
-                        }
                     }
-                    for (Monster monster : game.getMonsterList()) {
-                        if (monster.getPosition().equals(pos)) {
+                    for (Monster monster : game.getMonsterList())
+                        if (monster.getPosition().equals(pos))
                             monster.explode();
-                            System.out.println("monstre touché!");
-                        }
-
-                    }
                 }
                 int[] bombRealRange = bombs.get(i).getExplosionAnimationRange(player.getBombRange());
                 animateExplosion(bombs.get(i).getPosition(),new Position(bombs.get(i).getPosition().x()+bombRealRange[0],bombs.get(i).getPosition().y()));
@@ -279,9 +263,9 @@ public final class GameEngine {
             }
         }
 
-        if (!timerMonster.isRunning()) {
+        if (!timerMonster.isRunning())
             timerMonster.start();
-        }
+
         timerMonster.update(now);
 
         if (timerMonster.remaining() <= 0) {
@@ -293,13 +277,6 @@ public final class GameEngine {
                     monsterIterator.remove();
                 }
             }
-            /*
-            for (Monster monster : game.getMonsterList()) {
-                monster.update(now);
-                if (monster.isDeleted()){
-                    game.getMonsterList().remove(monster);
-                }
-            }*/
             timerMonster.start();
 
 

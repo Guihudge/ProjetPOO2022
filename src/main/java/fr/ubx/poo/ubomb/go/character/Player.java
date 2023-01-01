@@ -14,7 +14,6 @@ import fr.ubx.poo.ubomb.go.TakeVisitor;
 import fr.ubx.poo.ubomb.go.Takeable;
 import fr.ubx.poo.ubomb.go.decor.*;
 import fr.ubx.poo.ubomb.go.decor.bonus.*;
-import fr.ubx.poo.ubomb.view.SpriteBomb;
 
 public class Player extends GameObject implements Movable, TakeVisitor {
 
@@ -52,46 +51,39 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
     @Override
     public void take(Key key) {
-        System.out.println("Take the key ...");
         keys++;
         key.remove();
     }
 
     public void take(Princess princess) {
-        System.out.println("Get a Princess!");
         hadPrincess = true;
         princess.remove();
     }
 
     public void take(BombRangeDec rangeDec) {
-        System.out.println("Decrement bomb range");
         if (bombRange > 1)
             bombRange--;
         rangeDec.remove();
     }
 
     public void take(BombRangeInc rangeInc) {
-        System.out.println("Increment bomb range");
         bombRange++;
         rangeInc.remove();
     }
 
     public void take(BombNbInc numberInc) {
-        System.out.println("Bomb bag capacity +1");
         bombCapacity++;
         availableBomb = bombCapacity;
         numberInc.remove();
     }
 
     public void take(BombNbDec numberDec) {
-        System.out.println("Bomb bag capacity -1");
         bombCapacity--;
         availableBomb = bombCapacity;
         numberDec.remove();
     }
 
     public void take(Heart lives) {
-        System.out.println("Add lives");
         this.lives++;
         lives.remove();
     }
@@ -100,9 +92,8 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         // This method is called only if the move is possible, do not check again
         Position nextPos = direction.nextPosition(getPosition());
         GameObject next = game.grid().get(nextPos);
-        if (next instanceof Takeable takeable) {
+        if (next instanceof Takeable takeable)
             takeable.takenBy(this);
-        }
 
         if (next instanceof Box box){
             Position boxpos = direction.nextPosition(box.getPosition());
@@ -184,18 +175,17 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     }
 
     public void update(long now) {
-        if (moveRequested) {
-            if (canMove(direction)) {
+        if (moveRequested)
+            if (canMove(direction))
                 doMove(direction);
-            }
-        }
+
         moveRequested = false;
 
         if(damagetaken){
             timer.update(now);
-            if(timer.remaining() <= 0) {
+            if(timer.remaining() <= 0)
                 damagetaken = false;
-            }
+
             setModified(true);
         }
     }

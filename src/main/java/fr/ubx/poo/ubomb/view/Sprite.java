@@ -29,9 +29,8 @@ public class Sprite {
     }
 
     public final void setImage(Image image) {
-        if (this.image == null || this.image != image ) {
+        if (this.image == null || this.image != image )
             this.image = image;
-        }
     }
 
     public void updateImage() {

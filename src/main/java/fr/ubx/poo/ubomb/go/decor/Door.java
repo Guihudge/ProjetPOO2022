@@ -1,14 +1,12 @@
 package fr.ubx.poo.ubomb.go.decor;
 
-import fr.ubx.poo.ubomb.game.Game;
 import fr.ubx.poo.ubomb.game.Position;
 
-import javax.lang.model.util.Elements;
 
 public class Door extends Decor{
 
     private boolean isOpen;
-    private boolean isPrev;
+    private final boolean isPrev;
 
     public Door(Position position) {
         super(position);
@@ -45,7 +43,4 @@ public class Door extends Decor{
         isOpen = true;
     }
 
-    public boolean canOpen(Game game){
-        return game.player().getKeys() > 0;
-    }
 }
