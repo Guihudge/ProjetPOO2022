@@ -21,7 +21,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     private boolean moveRequested = false;
     private int lives;
     private boolean damagetaken = false;
-    private Timer timer;
+    final private Timer timer;
     private int keys;
 
     private int bombCapacity;
@@ -95,7 +95,7 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         if (next instanceof Takeable takeable)
             takeable.takenBy(this);
 
-        if (next instanceof Box box){
+        if (next instanceof Box box) {
             Position boxpos = direction.nextPosition(box.getPosition());
             game.grid().set(boxpos, box);
             game.grid().remove(nextPos);
@@ -113,10 +113,6 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         return damagetaken;
     }
 
-    public int getBombCapacity() {
-        return bombCapacity;
-    }
-
     public int getBombRange() {
         return bombRange;
     }
@@ -129,8 +125,8 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         return availableBomb;
     }
 
-    public void useKey(){
-        keys --;
+    public void useKey() {
+        keys--;
     }
 
     public void setAvailableBomb(int availableBomb) {
@@ -140,7 +136,10 @@ public class Player extends GameObject implements Movable, TakeVisitor {
     public Direction getDirection() {
         return direction;
     }
-    public boolean getRequestbomb(){return requestBomb;}
+
+    public boolean getRequestbomb() {
+        return requestBomb;
+    }
 
     public void setRequestBomb(boolean requestBomb) {
         this.requestBomb = requestBomb;
@@ -154,22 +153,25 @@ public class Player extends GameObject implements Movable, TakeVisitor {
         moveRequested = true;
     }
 
-    public void requestBomb(){
+    public void requestBomb() {
         requestBomb = true;
     }
 
     public final boolean canMove(Direction direction) {
         Decor pos = game.grid().get(direction.nextPosition(getPosition()));
         if (game.grid().inside(direction.nextPosition(getPosition()))) {
-            if(pos instanceof Box){
+            if (pos instanceof Box) {
                 Decor boxpos = game.grid().get(direction.nextPosition(pos.getPosition()));
-                if(boxpos != null)
+                if (boxpos != null)
                     System.out.println(boxpos.getPosition());
                 System.out.println(pos.getPosition());
-                if(game.grid().inside(direction.nextPosition(pos.getPosition())))
-                    return game.grid().get(direction.nextPosition(getPosition(),2)) == null;
-            }else
-                return !(pos instanceof Stone) && !(pos instanceof Tree) && !(pos instanceof Door && !((Door) pos).getIsOpen());
+                if (game.grid().inside(direction.nextPosition(pos.getPosition())))
+                    return game.grid().get(direction.nextPosition(getPosition(), 2)) == null;
+            }
+            if (pos == null) {
+                return true;
+            }
+            return pos.walkableBy(this);
         }
         return false;
     }
@@ -181,22 +183,23 @@ public class Player extends GameObject implements Movable, TakeVisitor {
 
         moveRequested = false;
 
-        if(damagetaken){
+        if (damagetaken) {
             timer.update(now);
-            if(timer.remaining() <= 0)
+            if (timer.remaining() <= 0)
                 damagetaken = false;
 
             setModified(true);
         }
     }
 
-    public void takeDommage(){
+    public void takeDommage() {
         if (!damagetaken) {
             lives -= 1;
             timer.start();
             damagetaken = true;
         }
     }
+
     @Override
     public void explode() {
         // TODO
